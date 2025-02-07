@@ -7,15 +7,20 @@ public class Controls : MonoBehaviour
     public float jumpHeight = 2f;
     public float gravity = 9.81f;
     public int maxJumps = 2;
+    public float dashForce = 10f;
+    public float dashDuration = 0.2f;
     
     public Transform cameraTransform;
-    public Vector3 cameraOffset = new Vector3(0, 2, -4); // Pozycja kamery za graczem
+    public Vector3 cameraOffset = new Vector3(0, 2, -4);
     
     private CharacterController controller;
     private float verticalVelocity;
     private int jumpCount = 0;
-    private float yaw = 0f; // Kąt obrotu poziomego
-    private float pitch = 0f; // Kąt obrotu pionowego
+    private float yaw = 0f;
+    private float pitch = 0f;
+    private bool isDashing = false;
+    private bool hasDashed = false;
+    private float dashTimer = 0f;
     
     void Start()
     {
@@ -27,6 +32,22 @@ public class Controls : MonoBehaviour
     {
         MovePlayer();
         RotateCamera();
+        
+        // Obsługa dashu
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !controller.isGrounded && !hasDashed)
+        {
+            StartDash();
+        }
+        
+        // Aktualizacja dashu
+        if (isDashing)
+        {
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+            }
+        }
     }
     
     void LateUpdate()
@@ -45,6 +66,7 @@ public class Controls : MonoBehaviour
         {
             verticalVelocity = -gravity * Time.deltaTime;
             jumpCount = 0;
+            hasDashed = false;
             if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
@@ -59,6 +81,11 @@ public class Controls : MonoBehaviour
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
+        }
+
+        if (isDashing)
+        {
+            move = transform.forward * dashForce;
         }
         
         move.y = verticalVelocity;
@@ -79,11 +106,17 @@ public class Controls : MonoBehaviour
     
     void UpdateCameraPosition()
     {
-        // Oblicz nową pozycję kamery z uwzględnieniem obrotu w pionie
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
         Vector3 newPosition = transform.position + rotation * cameraOffset;
         
         cameraTransform.position = newPosition;
         cameraTransform.LookAt(transform.position + Vector3.up * 1.5f);
+    }
+    
+    void StartDash()
+    {
+        isDashing = true;
+        hasDashed = true;
+        dashTimer = dashDuration;
     }
 }
