@@ -31,7 +31,7 @@ public class Shoot : MonoBehaviour
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         if (ballRigidbody != null)
         {
-            ballRigidbody.linearVelocity = Vector3.left * ballSpeed;
+            ballRigidbody.linearVelocity = Vector3.right * ballSpeed;
         }
 
         yield return new WaitForSeconds(animationLength / 2);

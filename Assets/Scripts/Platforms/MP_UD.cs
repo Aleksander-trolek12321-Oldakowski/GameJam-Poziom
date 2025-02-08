@@ -3,7 +3,8 @@ using UnityEngine;
 public class MP_UD : MonoBehaviour
 {
     public float speed = 2f;
-    public float height = 3f;
+    public float height;
+    public float down;
 
     private bool movingUp = true;
 
@@ -16,7 +17,7 @@ public class MP_UD : MonoBehaviour
         {
             movingUp = false;
         }
-        else if (!movingUp && transform.position.y <= 0)
+        else if (!movingUp && transform.position.y <= down)
         {
             movingUp = true;
         }
