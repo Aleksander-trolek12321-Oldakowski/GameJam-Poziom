@@ -3,33 +3,30 @@ using System.Collections;
 
 public class MoveTest : MonoBehaviour
 {
-    public Vector3 pointB;
+    public float moveDistance = 5f;
+    public float moveSpeed = 2f;
     public Animator animator;
+    private Vector3 startPosition;
+    private bool movingRight = true;
 
-    void Awake()
+    private void Awake()
     {
         animator.SetBool("isWalking", true);
     }
-
-    IEnumerator Start()
+    private void Start()
     {
-        var pointA = transform.position;
-        while (true)
-        {
-            yield return StartCoroutine(MoveObject(transform, pointA, pointB, 5.0f));
-            yield return StartCoroutine(MoveObject(transform, pointB, pointA, 5.0f));
-        }
+        startPosition = transform.position;
     }
 
-    IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time)
+    private void Update()
     {
-        var i = 0.0f;
-        var rate = 1.0f / time;
-        while (i < 1.0f)
+        Vector3 targetPosition = movingRight ? startPosition + Vector3.right * moveDistance : startPosition - Vector3.right * moveDistance;
+
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
         {
-            i += Time.deltaTime * rate;
-            thisTransform.position = Vector3.Lerp(startPos, endPos, i);
-            yield return null;
+            movingRight = !movingRight;
         }
     }
 }
