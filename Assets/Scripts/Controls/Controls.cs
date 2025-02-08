@@ -22,7 +22,7 @@ public class Controls : MonoBehaviour
     private bool hasDashed = false;
     private float dashTimer = 0f;
     
-    public Animator animator;
+    //public Animator animator;
 
     void Start()
     {
@@ -67,11 +67,11 @@ public class Controls : MonoBehaviour
         // Animacja chodzenia
         if (moveX != 0 || moveZ != 0)
         {
-            animator.SetBool("IsWalking", true);
+            //animator.SetBool("IsWalking", true);
         }
         else
         {
-            animator.SetBool("IsWalking", false);
+            //animator.SetBool("IsWalking", false);
         }
         
         if (controller.isGrounded)
@@ -81,20 +81,20 @@ public class Controls : MonoBehaviour
             hasDashed = false;
             
             // Animacja skoku
-            animator.SetBool("IsJumping", false);
+            //animator.SetBool("IsJumping", false);
             
             if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
                 jumpCount++;
-                animator.SetBool("IsJumping", true);
+                //animator.SetBool("IsJumping", true);
             }
         }
         else if (jumpCount < maxJumps && Input.GetButtonDown("Jump"))
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
             jumpCount++;
-            animator.SetBool("IsJumping", true);
+            //animator.SetBool("IsJumping", true);
         }
         else
         {

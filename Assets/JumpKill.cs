@@ -4,6 +4,7 @@ public class JumpKill : MonoBehaviour
 {
     private bool PlayerOnTop;
     public GameObject enemy;
+    public Animator animator;
 
     private void Start()
     {
@@ -14,8 +15,10 @@ public class JumpKill : MonoBehaviour
     {
         if (!PlayerOnTop && other.CompareTag("Player"))
         {
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isDead", true);
             PlayerOnTop=true;
-            enemy.SetActive(false);
+            Destroy(enemy, 2f);
         }
 
     }
