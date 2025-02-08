@@ -710,6 +710,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 253e31d5be266904584ab582535b4084, type: 3}
+--- !u!54 &399573823 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1936223282606241247, guid: 253e31d5be266904584ab582535b4084, type: 3}
+  m_PrefabInstance: {fileID: 399573822}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &526946304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2827,7 +2832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1979780417}
   rotationSpeed: 15
-  playerRb: {fileID: 0}
+  playerRb: {fileID: 399573823}
 --- !u!1 &1807841701
 GameObject:
   m_ObjectHideFlags: 0
