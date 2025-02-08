@@ -22,6 +22,8 @@ public class Controls : MonoBehaviour
     private bool hasDashed = false;
     private float dashTimer = 0f;
     
+    public Animator animator;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -33,13 +35,11 @@ public class Controls : MonoBehaviour
         MovePlayer();
         RotateCamera();
         
-        // Obsługa dashu
         if (Input.GetKeyDown(KeyCode.LeftShift) && !controller.isGrounded && !hasDashed)
         {
             StartDash();
         }
         
-        // Aktualizacja dashu
         if (isDashing)
         {
             dashTimer -= Time.deltaTime;
@@ -62,27 +62,41 @@ public class Controls : MonoBehaviour
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         
+        if (moveX != 0 || moveZ != 0)
+        {
+            animator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
+        
         if (controller.isGrounded)
         {
             verticalVelocity = -gravity * Time.deltaTime;
             jumpCount = 0;
             hasDashed = false;
+            
+            animator.SetBool("IsJumping", false);
+            
             if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
                 jumpCount++;
+                animator.SetBool("IsJumping", true);
             }
         }
         else if (jumpCount < maxJumps && Input.GetButtonDown("Jump"))
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
             jumpCount++;
+            animator.SetBool("IsJumping", true);
         }
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
         }
-
+        
         if (isDashing)
         {
             move = transform.forward * dashForce;
