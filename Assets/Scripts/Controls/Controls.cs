@@ -35,7 +35,7 @@ public class Controls : MonoBehaviour
         MovePlayer();
         RotateCamera();
 
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Joystick1Button4)) && !controller.isGrounded && !hasDashed)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !controller.isGrounded && !hasDashed)
         {
             StartDash();
         }
@@ -57,19 +57,14 @@ public class Controls : MonoBehaviour
 
     void MovePlayer()
     {
-        float moveX = Input.GetAxis("Horizontal") + Input.GetAxis("JoystickHorizontal");
-        float moveZ = Input.GetAxis("Vertical") + Input.GetAxis("JoystickVertical");
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
 
-        if (move.magnitude > 0)
-        {
-            animator.SetBool("IsWalking", true);
-        }
-        else
-        {
-            animator.SetBool("IsWalking", false);
-        }
+        // Sprawdź łączną wielkość wejścia, aby określić czy gracz się porusza
+        bool isMoving = new Vector2(moveX, moveZ).sqrMagnitude > 0.01f;
+        animator.SetBool("IsWalking", isMoving);
 
         if (controller.isGrounded)
         {
@@ -79,14 +74,14 @@ public class Controls : MonoBehaviour
 
             animator.SetBool("IsJumping", false);
 
-            if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0))
+            if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
                 jumpCount++;
                 animator.SetBool("IsJumping", true);
             }
         }
-        else if (jumpCount < maxJumps && (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0)))
+        else if (jumpCount < maxJumps && Input.GetButtonDown("Jump"))
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
             jumpCount++;
@@ -97,7 +92,7 @@ public class Controls : MonoBehaviour
             verticalVelocity -= gravity * Time.deltaTime;
         }
 
-        if ((isDashing) || Input.GetKeyDown(KeyCode.Joystick1Button4))
+        if (isDashing)
         {
             move = transform.forward * dashForce;
         }
@@ -108,11 +103,11 @@ public class Controls : MonoBehaviour
 
     void RotateCamera()
     {
-        float mouseX = Input.GetAxis("Mouse X") + Input.GetAxis("JoystickLookX");
-        float mouseY = Input.GetAxis("Mouse Y") + Input.GetAxis("JoystickLookY");
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        yaw += mouseX * mouseSensitivity * Time.deltaTime;
-        pitch -= mouseY * mouseSensitivity * Time.deltaTime;
+        yaw += mouseX;
+        pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, -45f, 45f);
 
         transform.rotation = Quaternion.Euler(0, yaw, 0);
