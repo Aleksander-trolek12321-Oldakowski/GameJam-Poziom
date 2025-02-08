@@ -6,6 +6,11 @@ public class MoveTest : MonoBehaviour
     public Vector3 pointB;
     public Animator animator;
 
+    void Awake()
+    {
+        animator.SetBool("isWalking", true);
+    }
+
     IEnumerator Start()
     {
         var pointA = transform.position;
@@ -14,7 +19,6 @@ public class MoveTest : MonoBehaviour
             yield return StartCoroutine(MoveObject(transform, pointA, pointB, 5.0f));
             yield return StartCoroutine(MoveObject(transform, pointB, pointA, 5.0f));
         }
-        animator.SetBool("isWalking", true);
     }
 
     IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time)
