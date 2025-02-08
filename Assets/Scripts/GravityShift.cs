@@ -1,35 +1,63 @@
-using JetBrains.Annotations;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GravityShift : MonoBehaviour
 {
-    public GameObject parent;
-    private float RotationSpeed = 90f;
-    private float TargetLocation = 90f;
-    private float CurrentRotation = 0f;
+    public Transform parent; // Obiekt, który ma byæ obracany
+    public float rotationSpeed = 90f; // Szybkoœæ obrotu w stopniach na sekundê
     private bool isRotating = false;
-    void Update()
+    private bool playerInZone = false;
+    public Rigidbody playerRb;
+    
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.E) && !isRotating)
+        if (other.CompareTag("Player") && !isRotating)
         {
-            isRotating = true;
-        }
+            playerInZone = true;
+            playerRb = other.GetComponent<Rigidbody>();
 
-        if (isRotating)
-        {
-            float step = RotationSpeed * Time.deltaTime;
-
-            if (CurrentRotation + step > TargetLocation)
+            if (playerRb != null)
             {
-                step = TargetLocation - CurrentRotation;
-                isRotating = false;
-                CurrentRotation = 0;
+                playerRb.useGravity = false; // Wy³¹cz grawitacjê gracza
+                playerRb.linearVelocity = Vector3.zero; // Zatrzymaj ruch gracza
             }
-            transform.Rotate(0, 0, step);
-            CurrentRotation += step;
+
+            StartCoroutine(RotateParent());
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInZone = false;
+        }
+    }
+
+    IEnumerator RotateParent()
+    {
+        isRotating = true;
+        float rotatedAmount = 0f;
+
+        while (rotatedAmount < 90f)
+        {
+            float step = rotationSpeed * Time.deltaTime;
+            if (rotatedAmount + step > 90f)
+            {
+                step = 90f - rotatedAmount; // Dok³adnie dokoñcz obrót do 90 stopni
+            }
+
+            parent.Rotate(0, 0, step);
+            rotatedAmount += step;
+            yield return null;
+        }
+
+        if (playerRb != null)
+        {
+            playerRb.useGravity = true; // Przywróæ grawitacjê gracza
+        }
+
+        isRotating = false;
     }
 }
