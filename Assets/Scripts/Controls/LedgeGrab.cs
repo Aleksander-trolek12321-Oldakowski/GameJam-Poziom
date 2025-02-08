@@ -73,11 +73,4 @@ public class LedgeGrab : MonoBehaviour
         controller.enabled = true;
         isClimbing = false;
     }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position + Vector3.up * ledgeCheckHeight, 
-                      transform.position + Vector3.up * ledgeCheckHeight + transform.forward * grabRange);
-    }
 }
