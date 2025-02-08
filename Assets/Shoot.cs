@@ -1,32 +1,42 @@
 using UnityEngine;
+using System.Collections;
 
 public class Shoot : MonoBehaviour
 {
     public GameObject ballPrefab;
     public Transform spawnPoint;
-    public float spawnInterval = 1f;
     public float ballSpeed = 5f;
+    public Animator animator;
 
-    private float timer;
+    private bool isShooting = false;
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+        if (!isShooting)
         {
-            Spawner();
-            timer = 0f;
+            StartCoroutine(ShootAfterAnimation());
         }
     }
 
-    void Spawner()
+    private IEnumerator ShootAfterAnimation()
     {
-        GameObject ball = Instantiate(ballPrefab, spawnPoint.position, Quaternion.identity);
+        isShooting = true;
+        animator.SetBool("isShooting", true);
 
+        float animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(animationLength / 2);
+
+        // Wystrzel pocisk w połowie animacji
+        GameObject ball = Instantiate(ballPrefab, spawnPoint.position, Quaternion.identity);
         Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
         if (ballRigidbody != null)
         {
-            ballRigidbody.linearVelocity = Vector3.right * ballSpeed;
+            ballRigidbody.linearVelocity = Vector3.left * ballSpeed;
         }
+
+        yield return new WaitForSeconds(animationLength / 2);
+        
+        animator.SetBool("isShooting", false);
+        isShooting = false;
     }
 }
