@@ -3394,6 +3394,8 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1407231813}
   m_SourcePrefab: {fileID: 100100000, guid: 7a56fd05a83d7b7428831e7c9dffc0a6, type: 3}
+<<<<<<< HEAD
+=======
 --- !u!1001 &2131906674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3472,6 +3474,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1228061981986060166, guid: 8ab3d74da4146c540b05a1eb6cf59f14, type: 3}
   m_PrefabInstance: {fileID: 1061695289}
   m_PrefabAsset: {fileID: 0}
+>>>>>>> origin/main
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3481,6 +3484,9 @@ SceneRoots:
   - {fileID: 526946304}
   - {fileID: 1186070514}
   - {fileID: 1061695289}
+<<<<<<< HEAD
+=======
   - {fileID: 2131906674}
   - {fileID: 1979780417}
   - {fileID: 1894747153}
+>>>>>>> origin/main
