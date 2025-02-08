@@ -4,6 +4,12 @@ using System.Collections;
 public class MoveTest : MonoBehaviour
 {
     public Vector3 pointB;
+    public Animator animator;
+
+    void Awake()
+    {
+        animator.SetBool("isWalking", true);
+    }
 
     IEnumerator Start()
     {
