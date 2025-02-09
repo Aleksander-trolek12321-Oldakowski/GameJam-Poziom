@@ -23,6 +23,7 @@ public class Controls : MonoBehaviour
     private float dashTimer = 0f;
 
     public Animator animator;
+    public GameObject Movement;
 
     void Start()
     {
@@ -65,6 +66,15 @@ public class Controls : MonoBehaviour
         // Sprawdź łączną wielkość wejścia, aby określić czy gracz się porusza
         bool isMoving = new Vector2(moveX, moveZ).sqrMagnitude > 0.01f;
         animator.SetBool("IsWalking", isMoving);
+
+        if(isMoving == true)
+        {
+            Movement.SetActive(true);
+        }
+        else
+        {
+            Movement.SetActive(false);
+        }
 
         if (controller.isGrounded)
         {
