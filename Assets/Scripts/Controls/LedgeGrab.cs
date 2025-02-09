@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class LedgeGrab : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class LedgeGrab : MonoBehaviour
             CheckForLedge();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isClimbing)
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 9") && !isClimbing)
         {
             TryGrabLedge();
         }
