@@ -24,6 +24,8 @@ public class Controls : MonoBehaviour
 
     public Animator animator;
     public GameObject Movement;
+    public GameObject Jump;
+    public GameObject Dash;
 
     void Start()
     {
@@ -38,6 +40,7 @@ public class Controls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && !controller.isGrounded && !hasDashed)
         {
+            Dash.SetActive(true);
             StartDash();
         }
 
@@ -46,6 +49,7 @@ public class Controls : MonoBehaviour
             dashTimer -= Time.deltaTime;
             if (dashTimer <= 0)
             {
+                Dash.SetActive(false);
                 isDashing = false;
             }
         }
@@ -86,6 +90,7 @@ public class Controls : MonoBehaviour
 
             if (Input.GetButtonDown("Jump"))
             {
+                Jump.SetActive(true);
                 verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
                 jumpCount++;
                 animator.SetBool("IsJumping", true);
@@ -93,12 +98,14 @@ public class Controls : MonoBehaviour
         }
         else if (jumpCount < maxJumps && Input.GetButtonDown("Jump"))
         {
+            Jump.SetActive(true);
             verticalVelocity = Mathf.Sqrt(jumpHeight * 2f * gravity);
             jumpCount++;
             animator.SetBool("IsJumping", true);
         }
         else
         {
+            Jump.SetActive(false);
             verticalVelocity -= gravity * Time.deltaTime;
         }
 
