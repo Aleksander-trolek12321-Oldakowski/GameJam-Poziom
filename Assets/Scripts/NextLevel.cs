@@ -1,25 +1,25 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class NextLevel : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public GameObject WinSound;
+    bool help = false;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && help == false)
         {
-            SceneManager.LoadScene("Level_2");
+            WinSound.SetActive(true);
+            StartCoroutine(ChangeLevel());
+            help = true;
         }
+    }
+
+    IEnumerator ChangeLevel()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Level_2");
     }
 }

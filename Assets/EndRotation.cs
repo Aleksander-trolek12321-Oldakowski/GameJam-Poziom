@@ -8,6 +8,7 @@ public class EndRotation : MonoBehaviour
     public float rotationSpeed = 90f;
     private bool isRotating = false;
     private bool playerInZone = false;
+    public GameObject AchievmentSource;
 
 
     private void OnTriggerEnter(Collider other)
@@ -15,7 +16,7 @@ public class EndRotation : MonoBehaviour
         if (other.CompareTag("Player") && !isRotating)
         {
             playerInZone = true;
-
+            AchievmentSource.SetActive(true);
             StartCoroutine(RotateParent());
 
             block.SetActive(false);
